@@ -1,0 +1,19 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();                         //n substitutes for s length
+        Set<String> dict = new HashSet(wordDict);   //faster contains time
+        boolean[] dp = new boolean[n+1];            //dp array to represent points in s that can be continued off of to finish the segmentation
+        dp[0] = true;               //"" string is always achievable
+        
+        for(int i = 1; i <= n; ++i) {           //i represents the length of the substring
+            for(int j = 0; j < i; ++j) {        //j represents the segmentation of the substring
+                if(dp[j] && dict.contains(s.substring(j, i))) {     //if the substring contains a word from the dictionary, and continues from previous point in dp
+                    dp[i] = true;           //set the continue off point in the dp array as true
+                    break;                  //no point in continuing the iteration if the continue point is further now
+                }
+            }
+        }
+        
+        return dp[n];               //if the whole word can be segmented, continue off point at the end must be true
+    }
+}
