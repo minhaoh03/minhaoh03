@@ -1,0 +1,17 @@
+class Solution {
+    /*
+    The trick with this problem is the ordering of adding the nodes to the resulting list. By recursively calling right(), and by calling the right node first, if right is null, only left will be added, otherwise, right is added. This will continue as depth will be increased each time, accounting so that both right and left won't be added.
+    */
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> re = new ArrayList();
+        right(root, re, 0);
+        return re;
+    }
+    
+    public void right(TreeNode cur, List<Integer> re, int depth) {
+        if(cur == null) return;
+        if(depth == re.size()) re.add(cur.val);
+        right(cur.right, re, depth+1);
+        right(cur.left, re, depth+1);
+    }
+}
