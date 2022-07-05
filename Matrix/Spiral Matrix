@@ -1,0 +1,30 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> re = new ArrayList<>();
+        int xMax = matrix[0].length-1;
+        int yMax = matrix.length-1;
+        int xMin = 0;
+        int yMin = 0;
+        while(xMax >= xMin && yMax >= yMin) {
+            for(int i = xMin; i <= xMax; ++i)
+                re.add(matrix[yMin][i]);
+            ++yMin;
+ 
+            for(int i = yMin; i <= yMax; ++i)
+                re.add(matrix[i][xMax]);
+            --xMax;
+            if(yMin <= yMax) {              //to ensure no duplicates
+                for(int i = xMax; i >= xMin; --i) 
+                    re.add(matrix[yMax][i]);
+                --yMax;
+            }
+            
+            if(xMin <= xMax) {              //to ensure no duplicates
+                for(int i = yMax; i >= yMin; --i)
+                    re.add(matrix[i][xMin]);
+                ++xMin;
+            }
+        }
+        return re;
+    }
+}
