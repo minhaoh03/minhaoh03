@@ -1,0 +1,11 @@
+class Solution {                                                //RECURSIVE
+    public int uniquePaths(int m, int n) {
+        return helper(m, n, 0, 0);
+    }
+    
+    public int helper(int m, int n, int r, int c) {
+        if(r == m || c == n) return 0;
+        if(r == m-1 && c == n-1) return 1;
+        return helper(m, n, r+1, c) + helper(m, n, r, c+1);     //Simple down right until ans, then add solution
+    }
+}
