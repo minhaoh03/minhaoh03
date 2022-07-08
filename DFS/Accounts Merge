@@ -1,0 +1,40 @@
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> mailName = new HashMap();                       //graphing each mail to a name
+        Map<String, Set<String>> mailNeighbors = new HashMap();             //graphing each mail to its given neighbors
+        for(int i = 0; i < accounts.size(); ++i) {                                      //nested for loop creates the mailNeighbors graph
+            String name = accounts.get(i).get(0);
+            for(int j = 1; j < accounts.get(i).size(); ++j) {                   //starts at 1 since 0 is name
+                if(!mailNeighbors.containsKey(accounts.get(i).get(j))) 
+                    mailNeighbors.put(accounts.get(i).get(j), new HashSet());
+                mailName.put(accounts.get(i).get(j), name);
+                if(j == 1) continue;                                                            
+                mailNeighbors.get(accounts.get(i).get(j)).add(accounts.get(i).get(j-1));        //two statements that add previous mail to current mail's list and vice versa
+                mailNeighbors.get(accounts.get(i).get(j-1)).add(accounts.get(i).get(j));
+            }
+        }
+        
+        //dfs
+        Set<String> visited = new HashSet();                //visited array for dfs
+        List<List<String>> re = new ArrayList();            //returning arraylist
+        for(String mail : mailNeighbors.keySet()) {         
+            List<String> temp = new ArrayList();            //temporary arraylist for each account
+            if(visited.add(mail)) {                         //if visited hasn't went through the current mail
+                dfs(mail, mailNeighbors, visited, temp);    //dfs through all the neighbors of the mail and add it into the combined arraylist for the account
+                Collections.sort(temp);                     //sort the list
+                temp.add(0, mailName.get(mail));            //add the name to the list
+                re.add(temp);                               //add the account to the list
+            }
+        }
+        
+        return re;
+    }
+    
+    public void dfs(String mail, Map<String, Set<String>> mailNeighbors, Set<String> visited, List<String> temp) {
+        temp.add(mail);
+        for(String neigh : mailNeighbors.get(mail)) {
+            if(visited.add(neigh))
+                dfs(neigh, mailNeighbors, visited, temp);
+        }
+    }
+}
