@@ -1,0 +1,20 @@
+class Solution {
+    String[] let = new String[] {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};     //more efficient to use an array to record letters for each phone number
+    public List<String> letterCombinations(String digits) {
+        if(digits.length() == 0) return new ArrayList<>();
+        List<String> combo = new ArrayList();
+        re(digits, combo, "");
+        return combo;
+    }
+    
+    public void re(String digits, List<String> combo, String curString) {
+        if(digits.length() == 0) {
+            combo.add(curString);
+            return;
+        }
+        String num = let[digits.charAt(0) - '1'];                   //letters per phone number digit
+        for(int i = 0; i < num.length(); ++i) {
+            re(digits.substring(1,digits.length()), combo, curString + num.substring(i,i+1));
+        }
+    }
+}
