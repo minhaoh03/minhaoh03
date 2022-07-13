@@ -1,0 +1,31 @@
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        if(p.length() > s.length()) return new ArrayList<Integer>();    //anagram must be smaller than word
+        
+        List<Integer> re = new ArrayList();
+        int[] let = new int[26];                //map
+        int l = 0;
+        int r = 0;
+        
+        for(int i = 0; i < p.length(); ++i) {
+            let[p.charAt(i) - 'a']++;               //add all characters onto the map with their specified amounts
+        }
+        
+        while(r < s.length()) {             
+            if(let[s.charAt(r) - 'a'] > 0) {            //if the window end is in the map, increase the window side rightside, and lower by 1 the map of that character
+                let[s.charAt(r++) - 'a']--;
+                if(r - l == p.length())                 //condition is that if the window is the same size as the anagram word, add it to the list 
+                    re.add(l);
+            }
+            else if(l == r) {                           //move window if window size is 0
+                ++r;
+                ++l;
+            }
+            else {                                      //if window beginning is not within the anagram, increase the left side of the window
+                let[s.charAt(l++) - 'a']++;
+            }
+        }
+        
+        return re;
+    }
+}
