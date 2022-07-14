@@ -1,0 +1,40 @@
+//Solution is basically just imaginging a graph with connected nodes. But removing all leaves slowly until the last two or nodes are left, returning the result
+class Solution {
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if(n == 1) {
+            List<Integer> a = new ArrayList<Integer>();
+            a.add(0);
+            return a;
+        }
+        List<Set<Integer>> nei = new ArrayList(n);
+        
+        for(int i = 0; i < n; ++i) {                    
+            nei.add(new HashSet());
+        }
+        for(int i = 0; i < edges.length; ++i) {         //make the neighboring list
+            nei.get(edges[i][0]).add(edges[i][1]);
+            nei.get(edges[i][1]).add(edges[i][0]);
+        }
+        
+        List<Integer> leaves = new ArrayList();
+        for(int i = 0; i < nei.size(); ++i) {           //add the leaves in
+            if(nei.get(i).size() == 1) 
+                leaves.add(i);
+        }
+        
+        int leavesleft = n;
+        while(leavesleft > 2) {                                 //check the leaves each iteration
+            leavesleft -= leaves.size(); 
+            List<Integer> temp = new ArrayList();
+            for(int l : leaves) {                               //for each leaf
+                for(int ne : nei.get(l)) {                          //remove said leaf from its neighbor's neighbor list
+                    nei.get(ne).remove(l);
+                    if(nei.get(ne).size() == 1) temp.add(ne);   //if that neighbor is now a leaf, add onto the new leaf list
+                }
+            }
+            leaves = temp;
+        }
+        
+        return leaves;          
+    }
+}
