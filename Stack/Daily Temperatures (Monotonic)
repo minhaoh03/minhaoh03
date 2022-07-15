@@ -1,0 +1,16 @@
+class Solution {
+    public int[] dailyTemperatures(int[] temp) {
+        Stack<Integer> s = new Stack();                         //monotonic stack
+        int[] re = new int[temp.length];
+        
+        for(int i = 0; i < temp.length; ++i) {
+            while(!s.isEmpty() && temp[s.peek()] < temp[i]) {       //keep the stack in descending order, pop out and evaluate values if top is lower than newest temperature
+                int ind = s.pop();
+                re[ind] = i - ind;
+            }
+            s.push(i);
+        }
+        
+        return re;
+    }
+}
